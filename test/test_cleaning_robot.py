@@ -44,3 +44,12 @@ class TestCleaningRobot(TestCase):
         robot = CleaningRobot()
         robot.manage_cleaning_system()
         mock_gpio.assert_has_calls([call(robot.CLEANING_SYSTEM_PIN, GPIO.LOW), call(robot.RECHARGE_LED_PIN, GPIO.HIGH)])
+
+    @patch.object(GPIO, "output")
+    @patch.object(IBS, "get_charge_left")
+    def test_turn_on_the_cleaning_system_turn_off_the_led_when_battery_greater_10(self, mock_ibs: Mock,
+                                                                                        mock_gpio: Mock):
+        mock_ibs.return_value = 11
+        robot = CleaningRobot()
+        robot.manage_cleaning_system()
+        mock_gpio.assert_has_calls([call(robot.CLEANING_SYSTEM_PIN, GPIO.HIGH), call(robot.RECHARGE_LED_PIN, GPIO.LOW)])
