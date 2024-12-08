@@ -78,6 +78,8 @@ class CleaningRobot:
                 self.pos_y += 1
             if self.heading == self.E:
                 self.pos_x += 1
+            if self.heading == self.W:
+                self.pos_x -= 1
         return self.robot_status()
 
     def obstacle_found(self) -> bool:
