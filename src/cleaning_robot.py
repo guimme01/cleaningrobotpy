@@ -73,7 +73,11 @@ class CleaningRobot:
         return f"({self.pos_x},{self.pos_y},{self.heading})"
 
     def execute_command(self, command: str) -> str:
-        self.pos_y += 1
+        if command == self.FORWARD:
+            if self.heading == self.N:
+                self.pos_y += 1
+            if self.heading == self.E:
+                self.pos_x += 1
         return self.robot_status()
 
     def obstacle_found(self) -> bool:
