@@ -86,6 +86,11 @@ class CleaningRobot:
             GPIO.output(self.RECHARGE_LED_PIN, GPIO.HIGH)
             self.cleaning_system_on = False
             self.recharge_led_on = True
+        else:
+            GPIO.output(self.CLEANING_SYSTEM_PIN, GPIO.HIGH)
+            GPIO.output(self.RECHARGE_LED_PIN, GPIO.LOW)
+            self.cleaning_system_on = True
+            self.recharge_led_on = False
 
     def activate_wheel_motor(self) -> None:
         """
