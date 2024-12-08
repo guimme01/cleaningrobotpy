@@ -59,3 +59,10 @@ class TestCleaningRobot(TestCase):
         robot.initialize_robot()
         robot.execute_command(robot.FORWARD)
         self.assertEqual(robot.robot_status(), '(0,1,N)')
+
+    def test_execute_command_move_forward_heading_E(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.heading = robot.E
+        robot.execute_command(robot.FORWARD)
+        self.assertEqual(robot.robot_status(), '(1,0,E)')
