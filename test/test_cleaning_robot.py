@@ -3,7 +3,7 @@ from unittest.mock import Mock, patch, call
 
 from mock import GPIO
 from mock.ibs import IBS
-from src.cleaning_robot import CleaningRobot
+from src.cleaning_robot import CleaningRobot, CleaningRobotError
 
 
 class TestCleaningRobot(TestCase):
@@ -53,3 +53,9 @@ class TestCleaningRobot(TestCase):
         robot = CleaningRobot()
         robot.manage_cleaning_system()
         mock_gpio.assert_has_calls([call(robot.CLEANING_SYSTEM_PIN, GPIO.HIGH), call(robot.RECHARGE_LED_PIN, GPIO.LOW)])
+
+    def test_execute_command_move_forward_heading_N(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.execute_command(robot.FORWARD)
+        self.assertEqual(robot.robot_status(), '(0,1,N)')
