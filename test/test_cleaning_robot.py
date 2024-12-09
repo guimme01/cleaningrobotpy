@@ -81,27 +81,27 @@ class TestCleaningRobot(TestCase):
         robot.execute_command(robot.FORWARD)
         self.assertEqual(robot.robot_status(), '(0,-1,S)')
 
-    def test_execute_command_rotate_from_N(self):
+    def test_execute_command_rotate_left_from_N(self):
         robot = CleaningRobot()
         robot.initialize_robot()
         robot.execute_command(robot.LEFT)
         self.assertEqual(robot.robot_status(), '(0,0,W)')
 
-    def test_execute_command_rotate_from_W(self):
+    def test_execute_command_rotate_left_from_W(self):
         robot = CleaningRobot()
         robot.initialize_robot()
         robot.heading = robot.W
         robot.execute_command(robot.LEFT)
         self.assertEqual(robot.robot_status(), '(0,0,S)')
 
-    def test_execute_command_rotate_from_S(self):
+    def test_execute_command_rotate_left_from_S(self):
         robot = CleaningRobot()
         robot.initialize_robot()
         robot.heading = robot.S
         robot.execute_command(robot.LEFT)
         self.assertEqual(robot.robot_status(), '(0,0,E)')
 
-    def test_execute_command_rotate_from_E(self):
+    def test_execute_command_rotate_left_from_E(self):
         robot = CleaningRobot()
         robot.initialize_robot()
         robot.heading = robot.E
