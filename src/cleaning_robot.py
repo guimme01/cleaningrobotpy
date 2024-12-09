@@ -73,6 +73,9 @@ class CleaningRobot:
         return f"({self.pos_x},{self.pos_y},{self.heading})"
 
     def execute_command(self, command: str) -> str:
+        if self.ibs.get_charge_left() <= 10:
+            self.manage_cleaning_system()
+            return '!'+self.robot_status()
         newPosX = self.pos_x
         newPosY = self.pos_y
         if command == self.FORWARD:
