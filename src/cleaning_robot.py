@@ -65,6 +65,8 @@ class CleaningRobot:
         self.recharge_led_on = False
         self.cleaning_system_on = False
 
+        self.goingBackToRechargeStation = False
+
     def initialize_robot(self) -> None:
         self.pos_x = 0
         self.pos_y = 0
@@ -77,44 +79,48 @@ class CleaningRobot:
         if self.ibs.get_charge_left() <= 10:
             self.manage_cleaning_system()
             return '!'+self.robot_status()
-        newPosX = self.pos_x
-        newPosY = self.pos_y
-        if command == self.FORWARD:
-            self.activate_wheel_motor()
-            if self.heading == self.N:
-                newPosY = self.pos_y + 1
-            if self.heading == self.E:
-                newPosX = self.pos_x + 1
-            if self.heading == self.W:
-                newPosX = self.pos_x - 1
-            if self.heading == self.S:
-                newPosY = self.pos_y - 1
-            if not self.obstacle_found():
-                self.pos_x = newPosX
-                self.pos_y = newPosY
-            else:
-                return self.robot_status() + f',({newPosX},{newPosY})'
+        if self.ibs.get_charge_left() <= 24 and not self.goingBackToRechargeStation:
+            self.goingBackToRechargeStation = True
+            self.go_to_recharge_station()
         else:
-            if command == self.LEFT:
+            newPosX = self.pos_x
+            newPosY = self.pos_y
+            if command == self.FORWARD:
+                self.activate_wheel_motor()
                 if self.heading == self.N:
-                    self.heading = self.W
-                elif self.heading == self.W:
-                    self.heading = self.S
-                elif self.heading == self.S:
-                    self.heading = self.E
-                elif self.heading == self.E:
-                    self.heading = self.N
+                    newPosY = self.pos_y + 1
+                if self.heading == self.E:
+                    newPosX = self.pos_x + 1
+                if self.heading == self.W:
+                    newPosX = self.pos_x - 1
+                if self.heading == self.S:
+                    newPosY = self.pos_y - 1
+                if not self.obstacle_found():
+                    self.pos_x = newPosX
+                    self.pos_y = newPosY
+                else:
+                    return self.robot_status() + f',({newPosX},{newPosY})'
             else:
-                if self.heading == self.N:
-                    self.heading = self.E
-                elif self.heading == self.E:
-                    self.heading = self.S
-                elif self.heading == self.S:
-                    self.heading = self.W
-                elif self.heading == self.W:
-                    self.heading = self.N
-                self.activate_rotation_motor(command)
-        return self.robot_status()
+                if command == self.LEFT:
+                    if self.heading == self.N:
+                        self.heading = self.W
+                    elif self.heading == self.W:
+                        self.heading = self.S
+                    elif self.heading == self.S:
+                        self.heading = self.E
+                    elif self.heading == self.E:
+                        self.heading = self.N
+                else:
+                    if self.heading == self.N:
+                        self.heading = self.E
+                    elif self.heading == self.E:
+                        self.heading = self.S
+                    elif self.heading == self.S:
+                        self.heading = self.W
+                    elif self.heading == self.W:
+                        self.heading = self.N
+                    self.activate_rotation_motor(command)
+            return self.robot_status()
 
     def obstacle_found(self) -> bool:
         return GPIO.input(self.INFRARED_PIN)
