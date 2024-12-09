@@ -168,3 +168,12 @@ class TestCleaningRobot(TestCase):
         robot.pos_y = 2
         robot.go_to_recharge_station()
         self.assertEqual(robot.robot_status(), '(0,0,E)')
+
+    @patch.object(GPIO, "input")
+    def test_go_to_recharge_station_with_obstacle(self, mock_input):
+        mock_input.return_value = True
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.pos_x = 1
+        robot.pos_y = 2
+        self.assertRaises(CleaningRobotError, robot.go_to_recharge_station)
