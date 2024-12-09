@@ -177,3 +177,13 @@ class TestCleaningRobot(TestCase):
         robot.pos_x = 1
         robot.pos_y = 2
         self.assertRaises(CleaningRobotError, robot.go_to_recharge_station)
+
+    @patch.object(IBS, 'get_charge_left')
+    def test_execute_command_calling_go_to_recharge_station_with_battery_lower_than_25(self, mock_ibs: Mock):
+        mock_ibs.return_value = 24
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.pos_x = 1
+        robot.pos_y = 1
+        robot.execute_command(robot.FORWARD)
+        self.assertEqual(robot.robot_status(), '(0,0,E)')
