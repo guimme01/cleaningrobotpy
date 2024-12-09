@@ -160,3 +160,11 @@ class TestCleaningRobot(TestCase):
         calls = [call(robot.CLEANING_SYSTEM_PIN, False), call(robot.RECHARGE_LED_PIN, True)]
         self.assertEqual(robot.execute_command(robot.FORWARD), '!(1,1,N)')
         mock_gpio.assert_has_calls(calls, any_order=True)
+
+    def test_go_to_recharge_station_without_obstacle(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.pos_x = 1
+        robot.pos_y = 2
+        robot.go_to_recharge_station()
+        self.assertEqual(robot.robot_status(), '(0,0,E)')
