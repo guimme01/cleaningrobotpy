@@ -11,7 +11,7 @@ class TestCleaningRobot(TestCase):
     def setUp(self):
         #Now all the test will run knowing that there is enough battery to operate (by default)
 
-        setUp_mock_ibs = patch.object(IBS, "get_charge_left", return_value=11)
+        setUp_mock_ibs = patch.object(IBS, "get_charge_left", return_value=25)
         setUp_mock_ibs.start()
         self.addCleanup(setUp_mock_ibs.stop)
 
