@@ -99,6 +99,8 @@ class CleaningRobot:
                 self.heading = self.E
             elif self.heading == self.E:
                 self.heading = self.S
+            elif self.heading == self.S:
+                self.heading = self.W
         return self.robot_status()
 
     def obstacle_found(self) -> bool:
