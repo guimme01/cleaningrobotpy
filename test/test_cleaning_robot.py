@@ -134,3 +134,10 @@ class TestCleaningRobot(TestCase):
         robot.heading = robot.W
         robot.execute_command(robot.RIGHT)
         self.assertEqual(robot.robot_status(), '(0,0,N)')
+
+    @patch.object(GPIO, "input")
+    def test_obstacle_found_should_not_move_and_return_obstacle_position(self, mock_input):
+        mock_input.return_value = True
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        self.assertEqual(robot.execute_command(robot.FORWARD), '(0,0,N),(0,1)')
