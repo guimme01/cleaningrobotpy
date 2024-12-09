@@ -141,3 +141,15 @@ class TestCleaningRobot(TestCase):
         robot = CleaningRobot()
         robot.initialize_robot()
         self.assertEqual(robot.execute_command(robot.FORWARD), '(0,0,N),(0,1)')
+
+    @patch.object(GPIO, 'output')
+    @patch.object(IBS, 'get_charge_left')
+    def test_execute_command_with_low_battery(self, mock_ibs: Mock, mock_gpio: Mock):
+        mock_ibs.return_value = 10
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.pos_x = 1
+        robot.pos_y = 1
+        calls = [call(robot.CLEANING_SYSTEM_PIN, False), call(robot.RECHARGE_LED_PIN, True)]
+        self.assertEqual(robot.execute_command(robot.FORWARD), '!(1,1,N)')
+        mock_gpio.assert_has_calls(calls, any_order=True)
