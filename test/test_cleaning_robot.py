@@ -120,3 +120,10 @@ class TestCleaningRobot(TestCase):
         robot.heading = robot.E
         robot.execute_command(robot.RIGHT)
         self.assertEqual(robot.robot_status(), '(0,0,S)')
+
+    def test_execute_command_rotate_right_from_S(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.heading = robot.S
+        robot.execute_command(robot.RIGHT)
+        self.assertEqual(robot.robot_status(), '(0,0,W)')
