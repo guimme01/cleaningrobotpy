@@ -100,3 +100,10 @@ class TestCleaningRobot(TestCase):
         robot.heading = robot.S
         robot.execute_command(robot.LEFT)
         self.assertEqual(robot.robot_status(), '(0,0,E)')
+
+    def test_execute_command_rotate_from_E(self):
+        robot = CleaningRobot()
+        robot.initialize_robot()
+        robot.heading = robot.E
+        robot.execute_command(robot.LEFT)
+        self.assertEqual(robot.robot_status(), '(0,0,N)')
