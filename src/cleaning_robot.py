@@ -1,4 +1,5 @@
 import time
+from getpass import win_getpass
 
 DEPLOYMENT = False  # This variable is to understand whether you are deploying on the actual hardware
 
@@ -117,6 +118,30 @@ class CleaningRobot:
 
     def obstacle_found(self) -> bool:
         return GPIO.input(self.INFRARED_PIN)
+
+    def go_to_recharge_station(self):
+        if self.pos_x > 0:
+            while self.heading != self.W:
+                self.execute_command(self.LEFT)
+            while self.pos_x != 0:
+                self.execute_command(self.FORWARD)
+        elif self.pos_x < 0:
+            while self.heading != self.E:
+                self.execute_command(self.RIGHT)
+            while self.pos_x != 0:
+                self.execute_command(self.FORWARD)
+        if self.pos_y > 0:
+            while self.heading != self.S:
+                self.execute_command(self.LEFT)
+            while self.pos_y != 0:
+                self.execute_command(self.FORWARD)
+        elif self.pos_y < 0:
+            while self.heading != self.N:
+                self.execute_command(self.RIGHT)
+            while self.pos_y != 0:
+                self.execute_command(self.FORWARD)
+        while self.heading != self.E:
+            self.execute_command(self.LEFT)
 
     def manage_cleaning_system(self) -> None:
         if self.ibs.get_charge_left() <= 10:
