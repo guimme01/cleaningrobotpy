@@ -124,22 +124,30 @@ class CleaningRobot:
             while self.heading != self.W:
                 self.execute_command(self.LEFT)
             while self.pos_x != 0:
-                self.execute_command(self.FORWARD)
+                status = self.execute_command(self.FORWARD)
+                if status == self.robot_status() + f',({self.pos_x - 1},{self.pos_y})':
+                    raise CleaningRobotError()
         elif self.pos_x < 0:
             while self.heading != self.E:
                 self.execute_command(self.RIGHT)
             while self.pos_x != 0:
-                self.execute_command(self.FORWARD)
+                status = self.execute_command(self.FORWARD)
+                if status == self.robot_status() + f',({self.pos_x + 1},{self.pos_y})':
+                    raise CleaningRobotError()
         if self.pos_y > 0:
             while self.heading != self.S:
                 self.execute_command(self.LEFT)
             while self.pos_y != 0:
-                self.execute_command(self.FORWARD)
+                status = self.execute_command(self.FORWARD)
+                if status == self.robot_status() + f',({self.pos_x},{self.pos_y - 1})':
+                    raise CleaningRobotError()
         elif self.pos_y < 0:
             while self.heading != self.N:
                 self.execute_command(self.RIGHT)
             while self.pos_y != 0:
-                self.execute_command(self.FORWARD)
+                status = self.execute_command(self.FORWARD)
+                if status == self.robot_status() + f',({self.pos_x},{self.pos_y + 1})':
+                    raise CleaningRobotError()
         while self.heading != self.E:
             self.execute_command(self.LEFT)
 
